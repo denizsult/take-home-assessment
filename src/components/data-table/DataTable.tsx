@@ -12,43 +12,21 @@ export function DataTable<T>({
   data,
   columns,
   total,
-  page,
-  pageSize,
-  sort,
   isLoading,
-  onPageChange,
-  onSortChange,
-  onPageSizeChange,
   renderRowActions,
   onRowClick,
   filterOptions,
   showFilters = true,
-  onFilterChange,
 }: DataTableProps<T>) {
   // Filter out hidden columns
   const visibleColumns = useMemo(() => {
     return columns.filter((column) => !column.hidden);
   }, [columns]);
 
-  // Handle column sort
-  const handleSort = (field: keyof T) => {
-    if (!sort || sort.field !== field) {
-      onSortChange({ field: field as string, direction: "asc" });
-    } else {
-      onSortChange({
-        field: field as string,
-        direction: sort.direction === "asc" ? "desc" : "asc",
-      });
-    }
-  };
-
   return (
     <div className="space-y-4">
       {showFilters && filterOptions && (
-        <FilterBar
-          filterOptions={filterOptions}
-          onFilterChange={onFilterChange}
-        />
+        <FilterBar filterOptions={filterOptions} />
       )}
 
       {/* Mevcut DataTable içeriği */}
@@ -58,8 +36,6 @@ export function DataTable<T>({
           <table className="min-w-full divide-y divide-gray-200">
             <DataTableHeader<T>
               visibleColumns={visibleColumns}
-              sort={sort}
-              onSort={handleSort}
               renderRowActions={!!renderRowActions}
             />
 
@@ -93,13 +69,7 @@ export function DataTable<T>({
         </div>
 
         {/* Pagination */}
-        <DataTablePagination
-          page={page}
-          pageSize={pageSize}
-          total={total}
-          onPageChange={onPageChange}
-          onPageSizeChange={onPageSizeChange}
-        />
+        <DataTablePagination total={total} />
       </div>
     </div>
   );

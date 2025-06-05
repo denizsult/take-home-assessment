@@ -1,40 +1,26 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { DataTable } from "@/components/data-table/DataTable";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { OrderForm } from "./OrderForm";
-import { Order, SortState, OrderStatus } from "@/api/types";
+import { Order, OrderStatus } from "@/api/types";
 import {
   statusOptions,
   getStatusLabel,
   statusColorMap,
   OrderFormValues,
 } from "./schemas";
-import { useUrlState } from "../../hooks/useUrlState";
 import { Plus } from "lucide-react";
 import { formatDate, formatCurrency } from "../../lib/utils";
-import { FilterOption, FilterState } from "@/types/filter.types";
+import { FilterOption } from "@/types/filter.types";
 import { OrderRowActions } from "./OrderRowActions";
 import { Column } from "@/types/datatable.types";
 import { orderApi } from "@/api/mock-api";
+import { useFilterStore } from "@/store/filterStore";
 
 export function OrdersTable() {
-  const [urlState, setUrlState] = useUrlState<{
-    page: number;
-    pageSize: number;
-    sort: SortState | undefined;
-    filters: FilterState;
-  }>({
-    page: 1,
-    pageSize: 10,
-    sort: { field: "orderDate", direction: "desc" },
-    filters: {},
-  });
+  const { filters, sort, page, pageSize } = useFilterStore();
 
-  // Extract state from URL
-  const { page, pageSize, sort, filters } = urlState;
-
-  // Local state
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [data, setData] = useState<{ data: Order[]; total: number }>({
     data: [],
@@ -56,9 +42,9 @@ export function OrdersTable() {
       type: "date",
     },
   ];
+
   // Fetch orders data
-  const fetchOrders = useCallback(async () => {
-    console.log("x");
+  const fetchOrders = async () => {
     setIsLoading(true);
     try {
       const result = await orderApi.getAll(filters, sort, page, pageSize);
@@ -68,11 +54,12 @@ export function OrdersTable() {
     } finally {
       setIsLoading(false);
     }
-  }, [filters, sort, page, pageSize]);
+  };
 
+  // Sayfa, filtre veya sıralama değiştiğinde verileri yeniden çek
   useEffect(() => {
     fetchOrders();
-  }, []);
+  }, [page, pageSize, sort, filters]);
 
   // Create order
   const handleCreateOrder = async (formData: OrderFormValues) => {
@@ -104,24 +91,6 @@ export function OrdersTable() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleFilterChange = (newFilters: FilterState) => {
-    setUrlState({
-      ...urlState,
-      filters: newFilters,
-      page: 1, // Reset to first page when filters change
-    });
-  };
-
-  // Handle sort changes
-  const handleSortChange = (newSort: SortState) => {
-    setUrlState({ ...urlState, sort: newSort });
-  };
-
-  // Handle page changes
-  const handlePageChange = (newPage: number) => {
-    setUrlState({ ...urlState, page: newPage });
   };
 
   // Table columns definition
@@ -179,17 +148,11 @@ export function OrdersTable() {
         data={data.data}
         columns={columns}
         total={data.total}
-        page={page}
-        pageSize={pageSize}
-        sort={sort}
         isLoading={isLoading}
-        onPageChange={handlePageChange}
-        onSortChange={handleSortChange}
         renderRowActions={(row) => (
           <OrderRowActions order={row} onDelete={handleDeleteOrder} />
         )}
         filterOptions={filterOptions}
-        onFilterChange={handleFilterChange}
       />
       <Modal
         isOpen={isCreateModalOpen}

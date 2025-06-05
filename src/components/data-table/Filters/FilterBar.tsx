@@ -5,9 +5,9 @@ import { SearchInput } from "./SearchInput";
 import { FilterMenu } from "./FilterMenu";
 import { FilterBarProps } from "@/types/filter.types";
 import { RenderIf } from "@/components/ui/RenderIf";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
-export function FilterBar({ filterOptions,onFilterChange }: FilterBarProps) {
+export function FilterBar({ filterOptions }: FilterBarProps) {
   const { filters, isFilterMenuOpen, toggleFilterMenu, clearFilters } =
     useFilterStore();
 
@@ -19,11 +19,7 @@ export function FilterBar({ filterOptions,onFilterChange }: FilterBarProps) {
   }, [filters]);
 
   const hasActiveFilters = usedFilterCount > 0;
-
-
-  useEffect(() => {
-    onFilterChange?.(filters);
-  }, [filters]);
+  
 
   return (
     <div className="mb-6 space-y-4">
@@ -37,13 +33,12 @@ export function FilterBar({ filterOptions,onFilterChange }: FilterBarProps) {
           onClick={toggleFilterMenu}
         >
           <Filter className="h-4 w-4 mr-2" />
-          Filters
+          Filtreler
           <RenderIf condition={hasActiveFilters}>
             <span className="text-sm">({usedFilterCount})</span>
           </RenderIf>
         </Button>
 
-        {/* Clear filters button */}
         <RenderIf condition={hasActiveFilters}>
           <Button
             type="button"
@@ -52,7 +47,7 @@ export function FilterBar({ filterOptions,onFilterChange }: FilterBarProps) {
             onClick={clearFilters}
           >
             <X className="h-4 w-4 mr-2" />
-            Clear filters
+            Filtreleri Temizle
           </Button>
         </RenderIf>
       </div>

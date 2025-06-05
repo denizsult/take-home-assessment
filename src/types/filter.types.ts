@@ -1,52 +1,44 @@
-import { SelectOption } from "@/components/ui/Select";
+import { SortState } from "@/api/types";
 
-export type FilterValue =
-  | string
-  | number
-  | boolean
-  | string[]
-  | number[]
-  | boolean[]
-  | undefined;
-
+export type FilterValue = unknown;
 export type FilterType = "select" | "date" | "boolean";
 
 export interface FilterOption {
   field: string;
   label: string;
   type: FilterType;
-  options?: SelectOption[];
+  options?: Array<{
+    label: string;
+    value: string | number;
+  }>;
 }
 
 export interface FilterBarProps {
   filterOptions: FilterOption[];
-  onFilterChange?: (filters: FilterState) => void;
 }
 
 export interface FilterMenuProps {
   filterOptions: FilterOption[];
 }
 
+export interface FilterState {
+  [key: string]: unknown;
+}
+
 export interface FilterStore {
-  // State
   filters: FilterState;
   search: string;
+  page?: number;
+  pageSize?: number;
+  sort?: SortState;
   isFilterMenuOpen: boolean;
-
-  // Actions
   setSearch: (search: string) => void;
   setFilters: (filters: FilterState) => void;
+  setPage: (page: number) => void;
+  setPageSize: (pageSize: number) => void;
+  setSort: (sort: SortState) => void;
   updateFilter: (field: string, value: FilterValue) => void;
   clearFilters: () => void;
   toggleFilterMenu: () => void;
-  setDateFilter: (
-    field: string,
-    startOrEnd: "start" | "end",
-    value: string
-  ) => void;
+  setDateFilter: (field: string, startOrEnd: string, value: string) => void;
 }
-
-export type FilterState = {
-  search?: string;
-  [key: string]: FilterValue;
-};

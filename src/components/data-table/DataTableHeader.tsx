@@ -1,23 +1,19 @@
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { Column } from "@/types/datatable.types";
+import { useFilterStore } from "@/store/filterStore";
 
 interface DataTableHeaderProps<T> {
   visibleColumns: Column<T>[];
-  sort?: { field: string; direction: "asc" | "desc" };
-  onSort: (field: keyof T) => void;
   renderRowActions?: boolean;
 }
 
-
 export function DataTableHeader<T>({
   visibleColumns,
-  sort,
-  onSort,
+
   renderRowActions,
 }: DataTableHeaderProps<T>) {
- 
- 
+  const { setSort, sort } = useFilterStore();
   const getSortIcon = (field: keyof T) => {
     if (!sort || sort.field !== field) return null;
     return sort.direction === "asc" ? (
@@ -25,6 +21,13 @@ export function DataTableHeader<T>({
     ) : (
       <ArrowDown className="h-4 w-4 ml-1" />
     );
+  };
+
+  const handleSort = (field: keyof T) => {
+    setSort({
+      field: field as string,
+      direction: sort?.direction === "asc" ? "desc" : "asc",
+    });
   };
 
   return (
@@ -39,7 +42,7 @@ export function DataTableHeader<T>({
               column.sortable && "cursor-pointer hover:bg-gray-100",
               column.className
             )}
-            onClick={() => column.sortable && onSort(column.field)}
+            onClick={() => column.sortable && handleSort(column.field)}
           >
             <div className="flex items-center">
               {column.header}
@@ -55,4 +58,4 @@ export function DataTableHeader<T>({
       </tr>
     </thead>
   );
-} 
+}
