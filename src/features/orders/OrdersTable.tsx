@@ -1,10 +1,9 @@
 import { useState, useCallback, useEffect } from "react";
-import { orderApi } from "../../api/mock-api";
-import { DataTable } from "../../components/data-table/DataTable";
-import { Button } from "../../components/ui/Button";
-import { Modal } from "../../components/ui/Modal";
+import { DataTable } from "@/components/data-table/DataTable";
+import { Button } from "@/components/ui/Button";
+import { Modal } from "@/components/ui/Modal";
 import { OrderForm } from "./OrderForm";
-import { Order, SortState, OrderStatus } from "../../api/types";
+import { Order, SortState, OrderStatus } from "@/api/types";
 import {
   statusOptions,
   getStatusLabel,
@@ -17,6 +16,7 @@ import { formatDate, formatCurrency } from "../../lib/utils";
 import { FilterOption, FilterState } from "@/types/filter.types";
 import { OrderRowActions } from "./OrderRowActions";
 import { Column } from "@/types/datatable.types";
+import { orderApi } from "@/api/mock-api";
 
 export function OrdersTable() {
   const [urlState, setUrlState] = useUrlState<{
@@ -107,7 +107,6 @@ export function OrdersTable() {
   };
 
   const handleFilterChange = (newFilters: FilterState) => {
- 
     setUrlState({
       ...urlState,
       filters: newFilters,

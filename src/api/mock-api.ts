@@ -1,161 +1,107 @@
-import { FilterState } from '@/types/filter.types';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { mockUsers, mockOrders } from './mock-data';
-import { ResourceId, SortState, User, Order } from './types';
 
-// Simulated API delay
 const MOCK_API_DELAY = 1000;
-
-// Helper function to simulate API delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-// Base API class for common operations
-class MockApiBase<T extends { id: ResourceId }> {
-  protected data: T[];
-  protected resourceName: string;
+// Minimum tip tanımları
+type AnyObject = Record<string, any>;
 
-  constructor(initialData: T[], resourceName: string) {
+class MockApiBase {
+  data: any[];
+  resourceName: string;
+
+  constructor(initialData: any[], resourceName: string) {
     this.data = [...initialData];
     this.resourceName = resourceName;
   }
 
-  async getAll(
-    filters: FilterState = {},
-    sort?: SortState,
-    page: number = 1,
-    pageSize: number = 10
-  ): Promise<{ data: T[]; total: number }> {
-    // Simulate API delay
+  async getAll(filters: AnyObject = {}, sort: any = null, page = 1, pageSize = 10) {
     await delay(MOCK_API_DELAY);
+    let result = [...this.data];
 
-    let filteredData = [...this.data];
-
-    // Apply filters
-    if (filters) {
-      filteredData = filteredData.filter(item => {
+    // Filtreleme
+    if (Object.keys(filters).length > 0) {
+      result = result.filter(item => {
         return Object.entries(filters).every(([key, value]) => {
           if (!value) return true;
-
-          const itemValue = (item as any)[key];
-
-          // Handle date range filters
-          if (key.endsWith('_start') || key.endsWith('_end')) {
-            const fieldName = key.split('_')[0];
-            const itemDate = new Date(itemValue).getTime();
-            const filterDate = new Date(value as string).getTime();
-
-            return key.endsWith('_start')
-              ? itemDate >= filterDate
-              : itemDate <= filterDate;
-          }
-
-          // Handle search filter
+          
+          const itemValue = item[key];
+          
           if (key === 'search') {
             return Object.values(item).some(val =>
-              String(val).toLowerCase().includes((value as string).toLowerCase())
+              String(val).toLowerCase().includes(value.toLowerCase())
             );
           }
-
-          // Handle array values
+          
           if (Array.isArray(value)) {
             return value.includes(itemValue);
           }
-
-          // Handle boolean values
-          if (typeof value === 'boolean') {
-            return itemValue === value;
-          }
-
-          // Handle string and number values
+          
           return String(itemValue).toLowerCase().includes(String(value).toLowerCase());
         });
       });
     }
 
-    // Apply sorting
-    if (sort && sort.field) {
-      filteredData.sort((a, b) => {
-        const aValue = (a as any)[sort.field];
-        const bValue = (b as any)[sort.field];
-        
-        if (typeof aValue === 'string' && typeof bValue === 'string') {
-          return sort.direction === 'asc' 
-            ? aValue.localeCompare(bValue) 
-            : bValue.localeCompare(aValue);
-        }
-        
+    // Sıralama
+    if (sort?.field) {
+      result.sort((a, b) => {
+        const aVal = a[sort.field];
+        const bVal = b[sort.field];
         return sort.direction === 'asc' 
-          ? (aValue > bValue ? 1 : -1)
-          : (aValue < bValue ? 1 : -1);
+          ? String(aVal).localeCompare(String(bVal))
+          : String(bVal).localeCompare(String(aVal));
       });
     }
 
-    const total = filteredData.length;
-    
-    // Apply pagination
+    // Sayfalama
+    const total = result.length;
     const start = (page - 1) * pageSize;
-    const paginatedData = filteredData.slice(start, start + pageSize);
+    const paginatedData = result.slice(start, start + pageSize);
 
     return { data: paginatedData, total };
   }
 
-  async getById(id: ResourceId): Promise<T | null> {
+  async getById(id: string) {
     await delay(MOCK_API_DELAY);
-    const item = this.data.find(item => item.id === id);
-    return item || null;
+    return this.data.find(item => item.id === id) || null;
   }
 
-  async create(item: Omit<T, 'id'>): Promise<T> {
+  async create(item: AnyObject) {
     await delay(MOCK_API_DELAY);
-    
-    // Generate a new ID
-    const id = `${this.resourceName}-${Date.now()}` as ResourceId;
-    
-    const newItem = { ...item, id } as T;
+    const newItem = { ...item, id: `${this.resourceName}-${Date.now()}` };
     this.data.unshift(newItem);
-    
     return newItem;
   }
 
-  async update(id: ResourceId, updates: Partial<T>): Promise<T> {
+  async update(id: string, updates: AnyObject) {
     await delay(MOCK_API_DELAY);
-    
     const index = this.data.findIndex(item => item.id === id);
-    if (index === -1) {
-      throw new Error(`${this.resourceName} not found`);
-    }
+    if (index === -1) throw new Error(`${this.resourceName} not found`);
     
-    const updatedItem = { ...this.data[index], ...updates };
-    this.data[index] = updatedItem;
-    
-    return updatedItem;
+    this.data[index] = { ...this.data[index], ...updates };
+    return this.data[index];
   }
 
-  async delete(id: ResourceId): Promise<void> {
+  async delete(id: string) {
     await delay(MOCK_API_DELAY);
-    
     const index = this.data.findIndex(item => item.id === id);
-    if (index === -1) {
-      throw new Error(`${this.resourceName} not found`);
-    }
-    
+    if (index === -1) throw new Error(`${this.resourceName} not found`);
     this.data.splice(index, 1);
   }
 }
 
-// User-specific API
-export class UserApi extends MockApiBase<User> {
+class UserApi extends MockApiBase {
   constructor() {
     super(mockUsers, 'user');
   }
 }
 
-// Order-specific API
-export class OrderApi extends MockApiBase<Order> {
+class OrderApi extends MockApiBase {
   constructor() {
     super(mockOrders, 'order');
   }
 }
 
-// API instances
 export const userApi = new UserApi();
 export const orderApi = new OrderApi();
