@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { DataTable } from "@/components/data-table/DataTable";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
@@ -44,7 +44,7 @@ export function OrdersTable() {
   ];
 
   // Fetch orders data
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     setIsLoading(true);
     try {
       const result = await orderApi.getAll(filters, sort, page, pageSize);
@@ -54,12 +54,12 @@ export function OrdersTable() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [filters, sort, page, pageSize]);
 
   // Sayfa, filtre veya sıralama değiştiğinde verileri yeniden çek
   useEffect(() => {
     fetchOrders();
-  }, [page, pageSize, sort, filters]);
+  }, [page, pageSize, sort, filters, fetchOrders]);
 
   // Create order
   const handleCreateOrder = async (formData: OrderFormValues) => {

@@ -31,7 +31,7 @@ export interface FilterStore {
   page?: number;
   pageSize?: number;
   sort?: SortState;
-  isFilterMenuOpen: boolean;
+ 
   setSearch: (search: string) => void;
   setFilters: (filters: FilterState) => void;
   setPage: (page: number) => void;
@@ -39,6 +39,6 @@ export interface FilterStore {
   setSort: (sort: SortState) => void;
   updateFilter: (field: string, value: FilterValue) => void;
   clearFilters: () => void;
-  toggleFilterMenu: () => void;
+ 
   setDateFilter: (field: string, startOrEnd: string, value: string) => void;
 }

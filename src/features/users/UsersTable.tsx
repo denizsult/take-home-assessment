@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { DataTable } from "@/components/data-table/DataTable";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
@@ -88,7 +88,7 @@ export function UsersTable() {
   const [isLoading, setIsLoading] = useState(false);
 
   // Fetch users data
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     setIsLoading(true);
     try {
       const result = await userApi.getAll(filters, sort, page, pageSize);
@@ -98,11 +98,11 @@ export function UsersTable() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [filters, sort, page, pageSize]);
 
   useEffect(() => {
     fetchUsers();
-  }, [page, pageSize, sort, filters]);
+  }, [page, pageSize, sort, filters,fetchUsers]);
 
   // Create user
   const handleCreateUser = async (formData: UserFormValues) => {
@@ -136,8 +136,6 @@ export function UsersTable() {
   const toggleRowActions = (id: string) => {
     setRowActionsId(rowActionsId === id ? undefined : id);
   };
-
-  // Row actions render function
 
   return (
     <div>

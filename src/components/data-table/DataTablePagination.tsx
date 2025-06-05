@@ -7,8 +7,8 @@ interface DataTablePaginationProps {
 }
 
 export function DataTablePagination({ total }: DataTablePaginationProps) {
-  const { setPage, setPageSize, page, pageSize } = useFilterStore();
-  const totalPages = Math.ceil(total / (pageSize || 10));
+  const { setPage, setPageSize, page = 1, pageSize = 10 } = useFilterStore();
+  const totalPages = Math.ceil(total / pageSize);
 
   const handlePageChange = (page: number) => {
     setPage(page);

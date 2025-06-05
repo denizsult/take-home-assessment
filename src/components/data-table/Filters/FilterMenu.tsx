@@ -18,9 +18,12 @@ export function FilterMenu({ filterOptions }: FilterMenuProps) {
 
           {filterOption.type === "select" && filterOption.options && (
             <Select
-              options={[{ value: "", label: "All" }, ...filterOption.options]}
+              options={[{ value: "", label: "All" }, ...filterOption.options.map(option => ({
+                ...option,
+                value: String(option.value)
+              }))]}
               value={(filters[filterOption.field] as string) || ""}
-              onChange={(value) => updateFilter(filterOption.field, value)}
+              onChange={(value) => updateFilter(filterOption.field, value)} 
             />
           )}
 

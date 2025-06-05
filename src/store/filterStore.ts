@@ -16,7 +16,6 @@ const defaultUrlState = {
 const store = create<FilterStore>((set) => ({
   // Initial state
   ...defaultUrlState,
-  isFilterMenuOpen: false,
 
   // Actions
   setSearch: (search) =>
@@ -43,11 +42,6 @@ const store = create<FilterStore>((set) => ({
       filters: {},
       search: "",
     }),
-
-  toggleFilterMenu: () =>
-    set((state) => ({
-      isFilterMenuOpen: !state.isFilterMenuOpen,
-    })),
 
   setDateFilter: (field, startOrEnd, value) =>
     set((state) => ({
@@ -76,8 +70,7 @@ export const useFilterStore = () => {
 
   // Store'dan URL'e senkronizasyon
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { isFilterMenuOpen, ...stateForUrl } = storeState;
+    const { ...stateForUrl } = storeState;
     setUrlState(stateForUrl);
   }, [
     storeState.filters,

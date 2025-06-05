@@ -5,11 +5,15 @@ import { SearchInput } from "./SearchInput";
 import { FilterMenu } from "./FilterMenu";
 import { FilterBarProps } from "@/types/filter.types";
 import { RenderIf } from "@/components/ui/RenderIf";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 export function FilterBar({ filterOptions }: FilterBarProps) {
-  const { filters, isFilterMenuOpen, toggleFilterMenu, clearFilters } =
-    useFilterStore();
+  const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
+  const { filters, clearFilters } = useFilterStore();
+
+  const toggleFilterMenu = () => {
+    setIsFilterMenuOpen(!isFilterMenuOpen);
+  };
 
   const usedFilterCount = useMemo(() => {
     return Object.keys(filters).filter(
@@ -19,7 +23,6 @@ export function FilterBar({ filterOptions }: FilterBarProps) {
   }, [filters]);
 
   const hasActiveFilters = usedFilterCount > 0;
-  
 
   return (
     <div className="mb-6 space-y-4">
