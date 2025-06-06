@@ -17,7 +17,7 @@ export function DataTable<T>({
   onRowClick,
   filterOptions,
   showFilters = true,
-  stickyActions = false,
+  stickyActions = true,
   defaultPageSize = 10,
 }: DataTableProps<T>) {
   // Filter out hidden columns

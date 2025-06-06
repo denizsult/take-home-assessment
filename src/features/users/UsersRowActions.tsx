@@ -18,7 +18,7 @@ export const UsersRowActions = ({
   };
 
   return (
-    <div className="flex items-center gap-2 w-[10px]">
+    <div className="flex items-center gap-2">
        
       <Button
         variant="ghost"
