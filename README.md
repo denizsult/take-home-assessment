@@ -1,11 +1,10 @@
-
-
 # About the Project
 I used Bulletproof React for this project because it provides a modular structure and helps keep the folder organization clean and scalable. This is the structure I generally follow in most of my projects.
 
 Currently, the project uses mock data. However, in real-world applications, I typically use TanStack Query. It makes handling API calls significantly easier and provides convenient access to features like caching and refetching.
 
 # Project Structure
+```
 src/
 ├── api/         (API Calls)
 ├── components/  (Reusable components)
@@ -15,6 +14,7 @@ src/
 ├── pages/       (Page components)
 ├── store/       (State management)
 └── types/       (TypeScript types)
+```
 
 # Used Libraries
 
