@@ -2,84 +2,19 @@ import { useState, useEffect, useCallback } from "react";
 import { DataTable } from "@/components/data-table/DataTable";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
-import { UserForm } from "./UserForm";
 import { User } from "@/api/types";
-import { roleOptions, getRoleLabel, UserFormValues } from "./schemas";
 import { Plus } from "lucide-react";
-import { formatDate } from "@/lib/utils";
 import { FilterOption } from "@/types/filter.types";
 import { useFilterStoreState } from "@/store/filterStore";
 import { UsersRowActions } from "./UsersRowActions";
-import { Column } from "@/types/datatable.types";
 import { userApi } from "@/api/mock-api";
-
-// Define filter options
-const filterOptions = [
-  {
-    field: "role",
-    label: "Role",
-    type: "select",
-    options: roleOptions,
-  },
-  {
-    field: "isActive",
-    label: "Status",
-    type: "boolean",
-  },
-  {
-    field: "createdAt",
-    label: "Created At",
-    type: "date",
-  },
-];
-
-// Table columns definition
-const columns: Column<User>[] = [
-  {
-    field: "name",
-    header: "Name",
-    sortable: true,
-  },
-  {
-    field: "email",
-    header: "Email",
-    sortable: true,
-  },
-  {
-    field: "role",
-    header: "Role",
-    sortable: true,
-    cell: (row: User) => getRoleLabel(row.role),
-  },
-  {
-    field: "isActive",
-    header: "Status",
-    sortable: true,
-    cell: (row: User) => (
-      <span
-        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-          row.isActive
-            ? "bg-green-100 text-green-800"
-            : "bg-red-100 text-red-800"
-        }`}
-      >
-        {row.isActive ? "Active" : "Inactive"}
-      </span>
-    ),
-  },
-  {
-    field: "createdAt",
-    header: "Created At",
-    sortable: true,
-    cell: (row: User) => formatDate(row.createdAt),
-  },
-];
+import { UserFormValues } from "./form/schemas";
+import { UserForm } from "./form";
+import { columns, filterOptions } from "./partials/columns";
 
 export function UsersTable() {
-  // Tek bir selector ile tüm state'i al
   const { page, pageSize, sort, filters } = useFilterStoreState();
 
-  // Local state
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [rowActionsId, setRowActionsId] = useState<string>();
   const [data, setData] = useState<{ data: User[]; total: number }>({
@@ -88,7 +23,6 @@ export function UsersTable() {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  // Fetch users data
   const fetchUsers = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -105,7 +39,6 @@ export function UsersTable() {
     fetchUsers();
   }, [fetchUsers]);
 
-  // Create user
   const handleCreateUser = async (formData: UserFormValues) => {
     setIsLoading(true);
     try {
@@ -119,7 +52,6 @@ export function UsersTable() {
     }
   };
 
-  // Delete user
   const handleDeleteUser = async (id: string) => {
     setIsLoading(true);
     try {
@@ -133,7 +65,6 @@ export function UsersTable() {
     }
   };
 
-  // Toggle row actions menu
   const toggleRowActions = (id: string) => {
     setRowActionsId(rowActionsId === id ? undefined : id);
   };

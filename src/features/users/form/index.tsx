@@ -1,11 +1,10 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { userSchema, UserFormValues, roleOptions } from './schemas';
-import { Button } from '../../components/ui/Button';
-import { Input } from '../../components/ui/Input';
-import { Select } from '../../components/ui/Select';
-import { Checkbox } from '../../components/ui/Checkbox';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Select } from '@/components/ui/Select';
+import { Checkbox } from '@/components/ui/Checkbox';
+import { UserFormValues, userSchema, roleOptions } from './schemas';
 
 interface UserFormProps {
   onSubmit: (data: UserFormValues) => void;
@@ -18,6 +17,7 @@ export function UserForm({ onSubmit, isLoading, defaultValues }: UserFormProps) 
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm<UserFormValues>({
     resolver: zodResolver(userSchema),
     defaultValues: {
@@ -61,11 +61,19 @@ export function UserForm({ onSubmit, isLoading, defaultValues }: UserFormProps) 
         <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
           Role
         </label>
-        <Select
-          id="role"
-          options={roleOptions}
-          error={errors.role?.message}
-          {...register('role')}
+        
+        <Controller
+          name="role"
+          control={control}
+          render={({ field }) => (
+            <Select
+              id="role"
+              options={roleOptions}
+              error={errors.role?.message}
+              value={field.value}
+              onChange={field.onChange}
+            />
+          )}
         />
       </div>
 

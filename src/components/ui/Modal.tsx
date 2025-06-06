@@ -1,6 +1,6 @@
-import React, { Fragment, useRef } from 'react';
-import { X } from 'lucide-react';
-import { cn } from '../../lib/utils';
+import React, { Fragment, useRef } from "react";
+import { X } from "lucide-react";
+import { cn } from "../../lib/utils";
 
 interface ModalProps {
   isOpen: boolean;
@@ -10,7 +10,13 @@ interface ModalProps {
   className?: string;
 }
 
-export function Modal({ isOpen, onClose, title, children, className }: ModalProps) {
+export function Modal({
+  isOpen,
+  onClose,
+  title,
+  children,
+  className,
+}: ModalProps) {
   const backdropRef = useRef<HTMLDivElement>(null);
 
   // Handle backdrop click
@@ -23,26 +29,24 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
   // Handle escape key press
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (e.key === "Escape" && isOpen) {
         onClose();
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
   return (
     <Fragment>
-      {/* Backdrop */}
       <div
         ref={backdropRef}
         className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center overflow-y-auto"
         onClick={handleBackdropClick}
       >
-        {/* Modal content */}
         <div
           className={cn(
             "bg-white rounded-lg shadow-lg w-full max-w-md mx-4 my-8 max-h-[90vh] flex flex-col animate-in fade-in duration-200",
@@ -50,7 +54,6 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
           )}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
             <button
@@ -60,8 +63,7 @@ export function Modal({ isOpen, onClose, title, children, className }: ModalProp
               <X className="h-5 w-5" />
             </button>
           </div>
-          
-          {/* Content */}
+
           <div className="p-4 overflow-y-auto">{children}</div>
         </div>
       </div>

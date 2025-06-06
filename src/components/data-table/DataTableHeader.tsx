@@ -2,6 +2,7 @@ import { ArrowDown, ArrowUp } from "lucide-react";
 import { cn } from "../../lib/utils";
 import { Column } from "@/types/datatable.types";
 import { useFilterStore } from "@/store/filterStore";
+import { RenderIf } from "../ui/RenderIf";
 
 interface DataTableHeaderProps<T> {
   visibleColumns: Column<T>[];
@@ -50,11 +51,11 @@ export function DataTableHeader<T>({
             </div>
           </th>
         ))}
-        {renderRowActions && (
-          <th scope="col" className="relative px-6 py-3">
+        <RenderIf condition={renderRowActions}>
+          <th scope="col" className="relative px-6 py-3 sticky right-0 bg-white shadow-[-4px_0_8px_-6px_rgba(0,0,0,0.1)]">
             <span className="sr-only">Actions</span>
           </th>
-        )}
+        </RenderIf>
       </tr>
     </thead>
   );

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { UserRole } from '../../api/types';
+import { UserRole } from '@/api/types';
 
 // Schema for user form validation
 export const userSchema = z.object({

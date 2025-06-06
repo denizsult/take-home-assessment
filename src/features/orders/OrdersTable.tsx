@@ -2,25 +2,16 @@ import { useState, useEffect, useCallback } from "react";
 import { DataTable } from "@/components/data-table/DataTable";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
-import { OrderForm } from "./OrderForm";
+import { OrderForm } from "./form";
 import { Order, OrderStatus } from "@/api/types";
-import {
-  statusOptions,
-  getStatusLabel,
-  statusColorMap,
-  OrderFormValues,
-} from "./schemas";
 import { Plus } from "lucide-react";
-import { formatDate, formatCurrency } from "../../lib/utils";
-import { FilterOption } from "@/types/filter.types";
 import { OrderRowActions } from "./OrderRowActions";
-import { Column } from "@/types/datatable.types";
 import { orderApi } from "@/api/mock-api";
 import { useFilterStoreState } from "@/store/filterStore";
+import { columns, filterOptions } from "./partials/columns";
+import { OrderFormValues } from "./form/schemas";
 
 export function OrdersTable() {
- 
-
   const { page, pageSize, sort, filters } = useFilterStoreState();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [data, setData] = useState<{ data: Order[]; total: number }>({
@@ -29,31 +20,11 @@ export function OrdersTable() {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  // Define filter options
-  const filterOptions: FilterOption[] = [
-    {
-      field: "status",
-      label: "Status",
-      type: "select",
-      options: statusOptions,
-    },
-    {
-      field: "orderDate",
-      label: "Order Date",
-      type: "date",
-    },
-  ];
-
   // Fetch orders data
   const fetchOrders = useCallback(async () => {
     setIsLoading(true);
     try {
-      const result = await orderApi.getAll(
-        filters,
-        sort,
-        page,
-        pageSize
-      );
+      const result = await orderApi.getAll(filters, sort, page, pageSize);
       setData(result);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -62,12 +33,10 @@ export function OrdersTable() {
     }
   }, [filters, sort, page, pageSize]);
 
-  // Sayfa, filtre veya sıralama değiştiğinde verileri yeniden çek
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
 
-  // Create order
   const handleCreateOrder = async (formData: OrderFormValues) => {
     setIsLoading(true);
     try {
@@ -86,7 +55,6 @@ export function OrdersTable() {
     }
   };
 
-  // Delete order
   const handleDeleteOrder = async (id: string) => {
     setIsLoading(true);
     try {
@@ -98,47 +66,6 @@ export function OrdersTable() {
       setIsLoading(false);
     }
   };
-
-  // Table columns definition
-  const columns: Column<Order>[] = [
-    {
-      field: "orderNumber",
-      header: "Order #",
-      sortable: true,
-    },
-    {
-      field: "customer",
-      header: "Customer",
-      sortable: true,
-    },
-    {
-      field: "status",
-      header: "Status",
-      sortable: true,
-      cell: (row: Order) => {
-        const { bg, text } = statusColorMap[row.status];
-        return (
-          <span
-            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${bg} ${text}`}
-          >
-            {getStatusLabel(row.status)}
-          </span>
-        );
-      },
-    },
-    {
-      field: "orderDate",
-      header: "Order Date",
-      sortable: true,
-      cell: (row: Order) => formatDate(row.orderDate),
-    },
-    {
-      field: "total",
-      header: "Total",
-      sortable: true,
-      cell: (row: Order) => formatCurrency(row.total),
-    },
-  ];
 
   return (
     <div>

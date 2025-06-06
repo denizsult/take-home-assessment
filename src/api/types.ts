@@ -22,7 +22,7 @@ export interface User {
 }
 
 // Order Types
-export type OrderStatus = 'pending' | 'processing' | 'completed' | 'cancelled';
+export type OrderStatus = 'pending' | 'shipped' | 'delivered' | 'cancelled';
 
 export interface Order {
   id: ResourceId;

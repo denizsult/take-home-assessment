@@ -31,7 +31,7 @@ export function DataTableBody<T>({
         <tr
           key={i}
           className={cn(
-            "hover:bg-gray-50 transition-colors",
+            "hover:bg-gray-50 transition-colors group",
             onRowClick && "cursor-pointer"
           )}
           onClick={() => onRowClick && onRowClick(row)}
@@ -50,7 +50,7 @@ export function DataTableBody<T>({
             </td>
           ))}
           {renderRowActions && (
-            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium sticky right-0  shadow-[-4px_0_8px_-6px_rgba(0,0,0,0.1)]">
               {renderRowActions(row)}
             </td>
           )}

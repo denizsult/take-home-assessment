@@ -30,6 +30,7 @@ export function OrderRowActions({ order, onDelete }: OrderRowActionsProps) {
       <Button
         variant="ghost"
         size="sm"
+   
         onClick={(e) => {
           // Stop event propagation to prevent row click
           e.stopPropagation();
@@ -40,7 +41,7 @@ export function OrderRowActions({ order, onDelete }: OrderRowActionsProps) {
       </Button>
 
       <RenderIf condition={isOpen}>
-        <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+        <div className="absolute z-20 right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
           <div className="py-1">
             <button
               className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"

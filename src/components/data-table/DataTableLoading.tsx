@@ -9,11 +9,11 @@ export const DataTableLoading = ({
 }: DataTableLoadingProps) => {
   return (
     <tbody className="bg-white divide-y divide-gray-200">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <tr key={`loading-${i}`}>
-          {Array.from({ length: visibleColumnCount }).map((_, j) => (
+      {Array.from({ length: 5 }).map((_, index) => (
+        <tr key={`loading-${index}`}>
+          {Array.from({ length: visibleColumnCount }).map((_, index) => (
             <td
-              key={`loading-${i}-${j}`}
+              key={`loading-${index}-${index}`}
               className="px-6 py-4 whitespace-nowrap"
             >
               <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4"></div>

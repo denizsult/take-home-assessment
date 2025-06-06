@@ -2,7 +2,7 @@
 import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 
-// Yardımcı fonksiyonlar
+// * Helper functions 
 function parseUrlValue(value: string, defaultValue: any) {
   if (Array.isArray(defaultValue)) {
     return value.split(",").filter(Boolean);
@@ -21,7 +21,7 @@ function serializeValue(value: any): string | null {
   if (value == null) return null;
   if (Array.isArray(value) && value.length === 0) return null;
   if (Array.isArray(value)) return value.join(",");
-  // Obje tipindeki verileri JSON string'e çevir
+  // ? Object type data to JSON string
   if (typeof value === "object") {
     return JSON.stringify(value);
   }
@@ -45,7 +45,7 @@ function shouldSkipValue(
 export function useUrlState<T extends Record<string, any>>(defaultState: T) {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // URL'den state'i oku
+  // * Read state from URL
   const state = useMemo(() => {
     const result = { ...defaultState };
 
@@ -60,7 +60,7 @@ export function useUrlState<T extends Record<string, any>>(defaultState: T) {
     return result;
   }, [searchParams, defaultState]);
 
-  // State'i URL'e yaz
+  // * Write state to URL
   const setState = useCallback(
     (newState: Partial<T>) => {
       const nextState = { ...state, ...newState };
