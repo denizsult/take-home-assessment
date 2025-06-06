@@ -36,7 +36,7 @@ export function FilterBar({ filterOptions }: FilterBarProps) {
           onClick={toggleFilterMenu}
         >
           <Filter className="h-4 w-4 mr-2" />
-          Filtreler
+          Filters
           <RenderIf condition={hasActiveFilters}>
             <span className="text-sm">({usedFilterCount})</span>
           </RenderIf>
@@ -50,7 +50,7 @@ export function FilterBar({ filterOptions }: FilterBarProps) {
             onClick={clearFilters}
           >
             <X className="h-4 w-4 mr-2" />
-            Filtreleri Temizle
+            Clear Filters
           </Button>
         </RenderIf>
       </div>

@@ -27,7 +27,7 @@ export function SearchInput() {
   return (
     <div className="relative flex-1">
       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-        <Search className="h-5 w-5 text-gray-400" />
+        <Search className="h-5 w-5 z-10 text-gray-400" />
       </div>
       <Input
         id="search-input"

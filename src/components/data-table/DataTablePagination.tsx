@@ -36,8 +36,9 @@ export function DataTablePagination({
     : [...pageSizeOptions, defaultPageSize];
 
   return (
-    <div className="px-4 py-3 flex items-center justify-end border-t border-gray-200 bg-gray-50">
+    <div className="px-4 py-3 flex items-center justify-between border-t border-gray-200 bg-gray-50">
       <div className="flex items-center gap-4">
+        <span className="text-sm text-gray-700">Show</span>
         <select
           value={pageSize}
           onChange={(e) => handlePageSizeChange(Number(e.target.value))}
@@ -49,7 +50,9 @@ export function DataTablePagination({
             </option>
           ))}
         </select>
+      </div>
 
+      <div className="flex items-center gap-4">
         <Button
           variant="outline"
           size="sm"

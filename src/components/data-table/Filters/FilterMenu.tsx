@@ -9,9 +9,11 @@ export function FilterMenu({ filterOptions }: FilterMenuProps) {
   const { filters, updateFilter, setDateFilter } = useFilterStore();
 
   return (
-    <div className="bg-white p-4 rounded-lg border border-gray-200 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <div className="bg-white p-4 rounded-lg border border-gray-200 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-center">
+      
+      
       {filterOptions.map((filterOption) => (
-        <div key={filterOption.field} className="space-y-2">
+        <div key={filterOption.field} className="space-y-2 ">
           <label className="block text-sm font-medium text-gray-700">
             {filterOption.label}
           </label>
@@ -31,28 +33,28 @@ export function FilterMenu({ filterOptions }: FilterMenuProps) {
           )}
 
           {filterOption.type === "boolean" && (
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               <Button
                 type="button"
                 variant={
                   filters[filterOption.field] === true ? "default" : "outline"
                 }
-                size="sm"
+                size="md"
                 className="flex-1"
                 onClick={() => updateFilter(filterOption.field, true)}
               >
-                Yes
+                Active
               </Button>
               <Button
                 type="button"
                 variant={
                   filters[filterOption.field] === false ? "default" : "outline"
                 }
-                size="sm"
+                size="md"
                 className="flex-1"
                 onClick={() => updateFilter(filterOption.field, false)}
               >
-                No
+                Inactive
               </Button>
               {(filters[filterOption.field] === true ||
                 filters[filterOption.field] === false) && (

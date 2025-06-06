@@ -32,9 +32,9 @@ export function DataTable<T>({
       )}
 
       {/* Mevcut DataTable içeriği */}
-      <div className="w-full overflow-hidden border border-gray-200 rounded-lg bg-white min-h-[500px]">
+      <div className="w-full overflow-hidden border border-gray-200 rounded-lg bg-white min-h-[400px]">
         {/* Table with horizontal scroll for all screen sizes */}
-        <div className="overflow-x-auto  min-h-[500px]">
+        <div className="overflow-x-auto  min-h-[400px]">
           <table className="min-w-full  divide-y divide-gray-200">
             <DataTableHeader<T>
               visibleColumns={visibleColumns}
