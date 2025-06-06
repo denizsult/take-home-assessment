@@ -1,6 +1,7 @@
 import { useFilterStore } from "@/store/filterStore";
 import { Button } from "../ui/Button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { RenderIf } from "../ui/RenderIf";
 
 interface DataTablePaginationProps {
   total: number;
@@ -36,6 +37,9 @@ export function DataTablePagination({
     : [...pageSizeOptions, defaultPageSize];
 
   return (
+    <RenderIf condition={totalPages > 1}>
+
+    
     <div className="px-4 py-3 flex items-center justify-between border-t border-gray-200 bg-gray-50">
       <div className="flex items-center gap-4">
         <span className="text-sm text-gray-700">Show</span>
@@ -76,7 +80,8 @@ export function DataTablePagination({
           Next
           <ChevronRight className="h-5 w-5 ml-1" />
         </Button>
+        </div>
       </div>
-    </div>
+    </RenderIf>
   );
 }
