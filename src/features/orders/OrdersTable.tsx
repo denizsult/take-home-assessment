@@ -46,7 +46,7 @@ export function OrdersTable() {
         status: formData.status as OrderStatus,
       };
       await orderApi.create(orderWithDate);
-      fetchOrders();
+      await fetchOrders();
       setIsCreateModalOpen(false);
     } catch (error) {
       console.error("Error creating order:", error);
@@ -56,10 +56,14 @@ export function OrdersTable() {
   };
 
   const handleDeleteOrder = async (id: string) => {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this order?"
+    );
+    if (!isConfirmed) return;
     setIsLoading(true);
     try {
       await orderApi.delete(id);
-      fetchOrders();
+      await fetchOrders();
     } catch (error) {
       console.error("Error deleting order:", error);
     } finally {

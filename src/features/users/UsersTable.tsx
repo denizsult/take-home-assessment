@@ -52,6 +52,8 @@ export function UsersTable() {
   };
 
   const handleDeleteUser = async (id: string) => {
+    const isConfirmed = window.confirm("Are you sure you want to delete this user?");
+    if (!isConfirmed) return;
     setIsLoading(true);
     try {
       await userApi.delete(id);
