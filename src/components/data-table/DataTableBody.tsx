@@ -50,7 +50,7 @@ export function DataTableBody<T>({
             </td>
           ))}
           {renderRowActions && (
-            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium sticky right-0  shadow-[-4px_0_8px_-6px_rgba(0,0,0,0.1)]">
+            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium sticky right-0 bg-white shadow-[-4px_0_8px_-6px_rgba(0,0,0,0.1)] group-hover:bg-gray-50">
               {renderRowActions(row)}
             </td>
           )}

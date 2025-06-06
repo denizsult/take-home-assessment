@@ -1,8 +1,6 @@
-import { useState } from "react";
 import { Order } from "@/api/types";
 import { Button } from "@/components/ui/Button";
-import { MoreHorizontal, Edit, Trash } from "lucide-react";
-import { RenderIf } from "@/components/ui/RenderIf";
+import { Edit, Trash } from "lucide-react";
 
 interface OrderRowActionsProps {
   order: Order;
@@ -10,62 +8,38 @@ interface OrderRowActionsProps {
 }
 
 export function OrderRowActions({ order, onDelete }: OrderRowActionsProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleToggle = () => {
-    setIsOpen(!isOpen);
-  };
-
   const handleEdit = () => {
-    console.log("edit");
+    
   };
 
   const handleDelete = () => {
     onDelete(order.id);
-    setIsOpen(false);
   };
 
   return (
-    <div className="relative">
+    <div className="flex items-center gap-2">
       <Button
         variant="ghost"
         size="sm"
-   
         onClick={(e) => {
-          // Stop event propagation to prevent row click
           e.stopPropagation();
-          handleToggle();
+          handleEdit();
         }}
       >
-        <MoreHorizontal className="h-4 w-4" />
+        <Edit className="h-4 w-4" />
       </Button>
 
-      <RenderIf condition={isOpen}>
-        <div className="absolute z-20 right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-          <div className="py-1">
-            <button
-              className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleEdit();
-              }}
-            >
-              <Edit className="h-4 w-4 mr-2" />
-              Edit
-            </button>
-            <button
-              className="w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-100 flex items-center"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDelete();
-              }}
-            >
-              <Trash className="h-4 w-4 mr-2" />
-              Delete
-            </button>
-          </div>
-        </div>
-      </RenderIf>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="text-red-700 hover:text-red-800"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleDelete();
+        }}
+      >
+        <Trash className="h-4 w-4" />
+      </Button>
     </div>
   );
 }

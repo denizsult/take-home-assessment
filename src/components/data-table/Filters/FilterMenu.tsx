@@ -18,12 +18,15 @@ export function FilterMenu({ filterOptions }: FilterMenuProps) {
 
           {filterOption.type === "select" && filterOption.options && (
             <Select
-              options={[{ value: "", label: "All" }, ...filterOption.options.map(option => ({
-                ...option,
-                value: String(option.value)
-              }))]}
+              options={[
+                { value: "", label: "All" },
+                ...filterOption.options.map((option) => ({
+                  ...option,
+                  value: String(option.value),
+                })),
+              ]}
               value={(filters[filterOption.field] as string) || ""}
-              onChange={(value) => updateFilter(filterOption.field, value)} 
+              onChange={(value) => updateFilter(filterOption.field, value)}
             />
           )}
 
@@ -31,7 +34,9 @@ export function FilterMenu({ filterOptions }: FilterMenuProps) {
             <div className="flex gap-2">
               <Button
                 type="button"
-                variant={filters[filterOption.field] === true ? "default" : "outline"}
+                variant={
+                  filters[filterOption.field] === true ? "default" : "outline"
+                }
                 size="sm"
                 className="flex-1"
                 onClick={() => updateFilter(filterOption.field, true)}
@@ -40,7 +45,9 @@ export function FilterMenu({ filterOptions }: FilterMenuProps) {
               </Button>
               <Button
                 type="button"
-                variant={filters[filterOption.field] === false ? "default" : "outline"}
+                variant={
+                  filters[filterOption.field] === false ? "default" : "outline"
+                }
                 size="sm"
                 className="flex-1"
                 onClick={() => updateFilter(filterOption.field, false)}
@@ -64,10 +71,29 @@ export function FilterMenu({ filterOptions }: FilterMenuProps) {
           {filterOption.type === "date" && (
             <div className="space-y-2">
               <div className="flex gap-2 items-center">
+                <Input
+                  type="date"
+                  value={
+                    (filters[`${filterOption.field}`] as string) || ""
+                  }
+                  onChange={(e) =>
+                    updateFilter(filterOption.field, e.target.value)
+                  }
+                  className="flex-1"
+                />
+              </div>
+            </div>
+          )}
+
+          {filterOption.type === "dateRange" && (
+            <div className="space-y-2">
+              <div className="flex gap-2 items-center">
                 <span className="text-xs text-gray-500">From:</span>
                 <Input
                   type="date"
-                  value={(filters[`${filterOption.field}_start`] as string) || ""}
+                  value={
+                    (filters[`${filterOption.field}_start`] as string) || ""
+                  }
                   onChange={(e) =>
                     setDateFilter(filterOption.field, "start", e.target.value)
                   }
@@ -91,4 +117,4 @@ export function FilterMenu({ filterOptions }: FilterMenuProps) {
       ))}
     </div>
   );
-} 
+}

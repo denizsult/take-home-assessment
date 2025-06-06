@@ -14,13 +14,6 @@ export default function Layout() {
     <div className="flex flex-col min-h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="flex items-center space-x-1">
-            <Package className="h-6 w-6 text-indigo-600" />
-            <span className="text-xl font-semibold text-gray-900">
-              DataTable
-            </span>
-          </div>
-
           <button
             onClick={toggleMobileMenu}
             className="md:hidden p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none"

@@ -1,7 +1,7 @@
 import { SortState } from "@/api/types";
 
 export type FilterValue = unknown;
-export type FilterType = "select" | "date" | "boolean";
+export type FilterType = "select" | "date" | "boolean" | "dateRange";
 
 export interface FilterOption {
   field: string;

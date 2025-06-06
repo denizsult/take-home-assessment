@@ -45,7 +45,7 @@ export function DataTableHeader<T>({
             )}
             onClick={() => column.sortable && handleSort(column.field)}
           >
-            <div className="flex items-center">
+            <div className="flex items-center whitespace-nowrap">
               {column.header}
               {column.sortable && getSortIcon(column.field)}
             </div>

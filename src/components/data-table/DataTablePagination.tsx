@@ -23,7 +23,7 @@ export function DataTablePagination({ total }: DataTablePaginationProps) {
         <select
           value={pageSize}
           onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-          className="block w-20 sm:text-sm text-gray-700"
+          className="block w-20 sm:text-sm text-gray-700 bg-transparent"
         >
           <option value="5">5</option>
           <option value="10">10</option>
