@@ -74,9 +74,26 @@ class MockApiBase {
 
     // Sıralama
     if (sort?.field) {
+      console.log(sort.field, sort.direction);
+      
+      
       result.sort((a, b) => {
         const aVal = a[sort.field];
         const bVal = b[sort.field];
+
+        // Tarih değerleri için
+        if (aVal instanceof Date || (typeof aVal === 'string' && !isNaN(Date.parse(aVal)))) {
+          const aTime = new Date(aVal).getTime();
+          const bTime = new Date(bVal).getTime();
+          return sort.direction === "asc" ? aTime - bTime : bTime - aTime;
+        }
+
+        // Sayısal değerler için
+        if (typeof aVal === 'number' && typeof bVal === 'number') {
+          return sort.direction === "asc" ? aVal - bVal : bVal - aVal;
+        }
+
+        // String değerler için
         return sort.direction === "asc"
           ? String(aVal).localeCompare(String(bVal))
           : String(bVal).localeCompare(String(aVal));
