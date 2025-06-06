@@ -1,12 +1,15 @@
 import { ReactNode } from "react";
 import { FilterOption, FilterState } from "./filter.types";
 
+export type CellType = "string" | "number" | "boolean" | "date" | "currency";
+
 export interface Column<T> {
   field: keyof T;
   header: string;
   hidden?: boolean;
   sortable?: boolean;
   className?: string;
+  type?: CellType;
   cell?: (row: T) => ReactNode;
 }
 
@@ -25,4 +28,6 @@ export interface DataTableProps<T> {
   filterOptions?: FilterOption[];
   showFilters?: boolean;
   onFilterChange?: (filters: FilterState) => void;
+  stickyActions?: boolean;
+  defaultPageSize?: number;
 }

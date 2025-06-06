@@ -4,10 +4,21 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface DataTablePaginationProps {
   total: number;
+  defaultPageSize: number;
 }
 
-export function DataTablePagination({ total }: DataTablePaginationProps) {
-  const { setPage, setPageSize, page = 1, pageSize = 10 } = useFilterStore();
+const pageSizeOptions = [5, 10, 20, 50, 100];
+
+export function DataTablePagination({
+  total,
+  defaultPageSize,
+}: DataTablePaginationProps) {
+  const {
+    setPage,
+    setPageSize,
+    page = 1,
+    pageSize = defaultPageSize,
+  } = useFilterStore();
   const totalPages = Math.ceil(total / pageSize);
 
   const handlePageChange = (page: number) => {
@@ -17,6 +28,13 @@ export function DataTablePagination({ total }: DataTablePaginationProps) {
   const handlePageSizeChange = (pageSize: number) => {
     setPageSize(pageSize);
   };
+
+  const isDefaultPageSizeExists = pageSizeOptions.includes(defaultPageSize);
+
+  const mergedPageSizeOptions = isDefaultPageSizeExists
+    ? pageSizeOptions
+    : [...pageSizeOptions, defaultPageSize];
+
   return (
     <div className="px-4 py-3 flex items-center justify-end border-t border-gray-200 bg-gray-50">
       <div className="flex items-center gap-4">
@@ -25,11 +43,11 @@ export function DataTablePagination({ total }: DataTablePaginationProps) {
           onChange={(e) => handlePageSizeChange(Number(e.target.value))}
           className="block w-20 sm:text-sm text-gray-700 bg-transparent"
         >
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
+          {mergedPageSizeOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
         </select>
 
         <Button

@@ -44,6 +44,7 @@ export const columns: Column<User>[] = [
     field: "isActive",
     header: "Status",
     sortable: true,
+    type: "boolean",
     cell: (row: User) => (
       <span
         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
@@ -60,6 +61,7 @@ export const columns: Column<User>[] = [
     field: "createdAt",
     header: "Created At",
     sortable: true,
+    type: "date",
     cell: (row: User) => formatDate(row.createdAt),
   },
 ];

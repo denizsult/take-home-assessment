@@ -23,6 +23,7 @@ export const columns: Column<Order>[] = [
     field: "orderNumber",
     header: "Order #",
     sortable: true,
+    
   },
   {
     field: "customer",
@@ -49,12 +50,14 @@ export const columns: Column<Order>[] = [
     field: "orderDate",
     header: "Order Date",
     sortable: true,
+    type: "date",
     cell: (row: Order) => formatDate(row.orderDate),
   },
   {
     field: "total",
     header: "Total",
     sortable: true,
+    type: "currency",
     cell: (row: Order) => formatCurrency(row.total),
   },
 ];

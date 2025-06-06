@@ -17,6 +17,8 @@ export function DataTable<T>({
   onRowClick,
   filterOptions,
   showFilters = true,
+  stickyActions = false,
+  defaultPageSize = 10,
 }: DataTableProps<T>) {
   // Filter out hidden columns
   const visibleColumns = useMemo(() => {
@@ -63,13 +65,17 @@ export function DataTable<T>({
                 isLoading={isLoading}
                 renderRowActions={renderRowActions}
                 onRowClick={onRowClick}
+                stickyActions={stickyActions}
               />
             </RenderIf>
           </table>
         </div>
 
         {/* Pagination */}
-        <DataTablePagination total={total} />
+        <DataTablePagination 
+        total={total}
+        defaultPageSize={defaultPageSize}
+        />
       </div>
     </div>
   );

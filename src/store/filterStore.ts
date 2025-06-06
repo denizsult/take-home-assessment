@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 interface FilterState {
   filters: Record<string, unknown>;
   page: number;
-  pageSize: number;
+  pageSize?: number;
   sort?: SortState;
   search: string;
   setSearch: (search: string) => void;
@@ -23,7 +23,7 @@ interface FilterState {
 const defaultUrlState = {
   filters: {},
   page: 1,
-  pageSize: 10,
+  pageSize: undefined,
   sort: undefined as SortState | undefined,
   search: "",
 };
