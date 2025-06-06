@@ -27,17 +27,19 @@ class MockApiBase {
 
     // Filtreleme
     if (Object.keys(filters).length > 0) {
-     
       result = result.filter((item) => {
         return Object.entries(filters).every(([key, value]) => {
-      
-
-          if (value === undefined || value === null || value === "")  return true;
+          if (value === undefined || value === null || value === "")
+            return true;
 
           if (["start_date", "end_date"].includes(key)) {
             const itemDate = new Date(item["createdAt"]);
-            const startDate = filters.start_date ? new Date(filters.start_date) : null;
-            const endDate = filters.end_date ? new Date(filters.end_date) : null;
+            const startDate = filters.start_date
+              ? new Date(filters.start_date)
+              : null;
+            const endDate = filters.end_date
+              ? new Date(filters.end_date)
+              : null;
             if (endDate) {
               endDate.setDate(endDate.getDate() + 1);
             }
@@ -75,22 +77,22 @@ class MockApiBase {
 
     // Sıralama
     if (sort?.field) {
-      console.log(sort.field, sort.direction);
-      
-      
       result.sort((a, b) => {
         const aVal = a[sort.field];
         const bVal = b[sort.field];
 
         // Tarih değerleri için
-        if (aVal instanceof Date || (typeof aVal === 'string' && !isNaN(Date.parse(aVal)))) {
+        if (
+          aVal instanceof Date ||
+          (typeof aVal === "string" && !isNaN(Date.parse(aVal)))
+        ) {
           const aTime = new Date(aVal).getTime();
           const bTime = new Date(bVal).getTime();
           return sort.direction === "asc" ? aTime - bTime : bTime - aTime;
         }
 
         // Sayısal değerler için
-        if (typeof aVal === 'number' && typeof bVal === 'number') {
+        if (typeof aVal === "number" && typeof bVal === "number") {
           return sort.direction === "asc" ? aVal - bVal : bVal - aVal;
         }
 
