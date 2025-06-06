@@ -3,6 +3,8 @@ I used Bulletproof React for this project because it provides a modular structur
 
 Currently, the project uses mock data. However, in real-world applications, I typically use TanStack Query. It makes handling API calls significantly easier and provides convenient access to features like caching and refetching.
 
+I believe it's more appropriate to handle filtering on the backend, so I'm implementing the filtering logic within the mock API.
+
 # Project Structure
 ```
 src/
