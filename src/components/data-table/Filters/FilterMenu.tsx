@@ -10,8 +10,6 @@ export function FilterMenu({ filterOptions }: FilterMenuProps) {
 
   return (
     <div className="bg-white p-4 rounded-lg border border-gray-200 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 items-center">
-      
-      
       {filterOptions.map((filterOption) => (
         <div key={filterOption.field} className="space-y-2 ">
           <label className="block text-sm font-medium text-gray-700">
@@ -75,9 +73,7 @@ export function FilterMenu({ filterOptions }: FilterMenuProps) {
               <div className="flex gap-2 items-center">
                 <Input
                   type="date"
-                  value={
-                    (filters[`${filterOption.field}`] as string) || ""
-                  }
+                  value={(filters[`${filterOption.field}`] as string) || ""}
                   onChange={(e) =>
                     updateFilter(filterOption.field, e.target.value)
                   }
@@ -88,16 +84,14 @@ export function FilterMenu({ filterOptions }: FilterMenuProps) {
           )}
 
           {filterOption.type === "dateRange" && (
-            <div className="space-y-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <div className="flex gap-2 items-center">
                 <span className="text-xs text-gray-500">From:</span>
                 <Input
                   type="date"
-                  value={
-                    (filters[`${filterOption.field}_start`] as string) || ""
-                  }
+                  value={(filters[`start_date`] as string) || ""}
                   onChange={(e) =>
-                    setDateFilter(filterOption.field, "start", e.target.value)
+                    updateFilter('start_date', e.target.value)
                   }
                   className="flex-1"
                 />
@@ -106,9 +100,9 @@ export function FilterMenu({ filterOptions }: FilterMenuProps) {
                 <span className="text-xs text-gray-500">To:</span>
                 <Input
                   type="date"
-                  value={(filters[`${filterOption.field}_end`] as string) || ""}
+                  value={(filters[`end_date`] as string) || ""}
                   onChange={(e) =>
-                    setDateFilter(filterOption.field, "end", e.target.value)
+                    updateFilter('end_date', e.target.value)
                   }
                   className="flex-1"
                 />

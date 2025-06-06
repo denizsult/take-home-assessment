@@ -29,6 +29,6 @@ export interface Order {
   orderNumber: string;
   customer: string;
   status: OrderStatus;
-  orderDate: string;
+  createdAt: string;
   total: number;
 }

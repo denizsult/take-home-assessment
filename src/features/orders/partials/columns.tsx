@@ -12,9 +12,9 @@ export const filterOptions: FilterOption[] = [
     options: statusOptions,
   },
   {
-    field: "orderDate",
+    field: "createdAt",
     label: "Order Date",
-    type: "date",
+    type: "dateRange",
   },
 ];
 
@@ -35,8 +35,7 @@ export const columns: Column<Order>[] = [
     header: "Status",
     sortable: true,
     cell: (row: Order) => {
-      console.log(row.status);
-      const { bg, text } = statusColorMap[row.status];
+       const { bg, text } = statusColorMap[row.status];
       return (
         <span
           className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${bg} ${text}`}
@@ -47,11 +46,11 @@ export const columns: Column<Order>[] = [
     },
   },
   {
-    field: "orderDate",
+    field: "createdAt",
     header: "Order Date",
     sortable: true,
     type: "date",
-    cell: (row: Order) => formatDate(row.orderDate),
+    cell: (row: Order) => formatDate(row.createdAt),
   },
   {
     field: "total",

@@ -42,7 +42,7 @@ export function OrdersTable() {
     try {
       const orderWithDate = {
         ...formData,
-        orderDate: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
         status: formData.status as OrderStatus,
       };
       await orderApi.create(orderWithDate);

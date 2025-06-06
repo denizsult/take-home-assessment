@@ -103,7 +103,7 @@ export const mockOrders: Order[] = [
     customer: "John Doe",
     status: "pending",
     total: 99.99,
-    orderDate: "2025-03-01T10:00:00Z",
+    createdAt: "2025-03-01T10:00:00Z",
   },
   {
     id: "2",
@@ -111,7 +111,7 @@ export const mockOrders: Order[] = [
     customer: "Jane Smith",
     status: "pending",
     total: 149.99,
-    orderDate: "2025-03-02T11:00:00Z",
+    createdAt: "2025-03-02T11:00:00Z",
   },
   {
     id: "3",
@@ -119,7 +119,7 @@ export const mockOrders: Order[] = [
     customer: "Bob Johnson",
     status: "cancelled",
     total: 199.99,
-    orderDate: "2025-03-03T12:00:00Z",
+    createdAt: "2025-03-03T12:00:00Z",
   },
   {
     id: "4",
@@ -127,7 +127,7 @@ export const mockOrders: Order[] = [
     customer: "Alice Brown",
     status: "cancelled",
     total: 79.99,
-    orderDate: "2025-03-04T13:00:00Z",
+    createdAt: "2025-03-04T13:00:00Z",
   },
   {
     id: "5",
@@ -135,6 +135,6 @@ export const mockOrders: Order[] = [
     customer: "Charlie Wilson",
     status: "shipped",
     total: 299.99,
-    orderDate: "2025-03-05T14:00:00Z",
+    createdAt: "2025-03-05T14:00:00Z",
   },
 ];

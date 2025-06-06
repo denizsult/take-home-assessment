@@ -16,7 +16,7 @@ interface FilterState {
   setFilters: (filters: Record<string, unknown>) => void;
   updateFilter: (field: string, value: unknown) => void;
   clearFilters: () => void;
-  setDateFilter: (field: string, startOrEnd: string, value: string) => void;
+  setDateFilter: (field: string, value: string) => void;
 }
 
 // URL state için varsayılan değerler
