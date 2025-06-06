@@ -8,7 +8,7 @@ import { roleOptions, getRoleLabel, UserFormValues } from "./schemas";
 import { Plus } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { FilterOption } from "@/types/filter.types";
-import { useFilterStore } from "@/store/filterStore";
+import { useFilterStoreState } from "@/store/filterStore";
 import { UsersRowActions } from "./UsersRowActions";
 import { Column } from "@/types/datatable.types";
 import { userApi } from "@/api/mock-api";
@@ -76,7 +76,8 @@ const columns: Column<User>[] = [
 ];
 
 export function UsersTable() {
-  const { page, pageSize, sort, filters } = useFilterStore();
+  // Tek bir selector ile tüm state'i al
+  const { page, pageSize, sort, filters } = useFilterStoreState();
 
   // Local state
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -102,7 +103,7 @@ export function UsersTable() {
 
   useEffect(() => {
     fetchUsers();
-  }, [page, pageSize, sort, filters,fetchUsers]);
+  }, [fetchUsers]);
 
   // Create user
   const handleCreateUser = async (formData: UserFormValues) => {

@@ -16,11 +16,12 @@ import { FilterOption } from "@/types/filter.types";
 import { OrderRowActions } from "./OrderRowActions";
 import { Column } from "@/types/datatable.types";
 import { orderApi } from "@/api/mock-api";
-import { useFilterStore } from "@/store/filterStore";
+import { useFilterStoreState } from "@/store/filterStore";
 
 export function OrdersTable() {
-  const { filters, sort, page, pageSize } = useFilterStore();
+ 
 
+  const { page, pageSize, sort, filters } = useFilterStoreState();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [data, setData] = useState<{ data: Order[]; total: number }>({
     data: [],
@@ -47,7 +48,12 @@ export function OrdersTable() {
   const fetchOrders = useCallback(async () => {
     setIsLoading(true);
     try {
-      const result = await orderApi.getAll(filters, sort, page, pageSize);
+      const result = await orderApi.getAll(
+        filters,
+        sort,
+        page,
+        pageSize
+      );
       setData(result);
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -59,7 +65,7 @@ export function OrdersTable() {
   // Sayfa, filtre veya sıralama değiştiğinde verileri yeniden çek
   useEffect(() => {
     fetchOrders();
-  }, [page, pageSize, sort, filters, fetchOrders]);
+  }, [fetchOrders]);
 
   // Create order
   const handleCreateOrder = async (formData: OrderFormValues) => {

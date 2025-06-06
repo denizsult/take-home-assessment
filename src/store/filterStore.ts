@@ -1,8 +1,23 @@
 import { SortState } from "@/api/types";
-import { FilterStore } from "@/types/filter.types";
 import { create } from "zustand";
 import { useUrlState } from "@/hooks/useUrlState";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+
+interface FilterState {
+  filters: Record<string, unknown>;
+  page: number;
+  pageSize: number;
+  sort?: SortState;
+  search: string;
+  setSearch: (search: string) => void;
+  setPage: (page: number) => void;
+  setPageSize: (pageSize: number) => void;
+  setSort: (sort: SortState) => void;
+  setFilters: (filters: Record<string, unknown>) => void;
+  updateFilter: (field: string, value: unknown) => void;
+  clearFilters: () => void;
+  setDateFilter: (field: string, startOrEnd: string, value: string) => void;
+}
 
 // URL state için varsayılan değerler
 const defaultUrlState = {
@@ -13,7 +28,10 @@ const defaultUrlState = {
   search: "",
 };
 
-const store = create<FilterStore>((set) => ({
+
+
+
+export const useFilterStore = create<FilterState>((set) => ({
   // Initial state
   ...defaultUrlState,
 
@@ -52,35 +70,57 @@ const store = create<FilterStore>((set) => ({
     })),
 }));
 
-// URL senkronizasyonu ile birleştirilmiş store hook'u
-export const useFilterStore = () => {
+
+
+
+
+// URL senkronizasyonu için selector hook
+export const useFilterStoreState = () => {
   const [urlState, setUrlState] = useUrlState(defaultUrlState);
-  const storeState = store();
+  const isInitialMount = useRef(true);
+  
+  // Store'dan state'i al
+  const state = useFilterStore(state => ({
+    filters: state.filters,
+    page: state.page,
+    pageSize: state.pageSize,
+    sort: state.sort,
+    search: state.search
+  }));
 
-  // URL'den store'a senkronizasyon (mount olduğunda)
+  // İlk mount'ta URL'den state'e
   useEffect(() => {
-    store.setState({
-      filters: urlState.filters,
-      page: urlState.page,
-      pageSize: urlState.pageSize,
-      sort: urlState.sort,
-      search: urlState.search,
-    });
-  }, []);
+    if (isInitialMount.current) {
+      useFilterStore.setState({
+        filters: urlState.filters,
+        page: urlState.page,
+        pageSize: urlState.pageSize,
+        sort: urlState.sort,
+        search: urlState.search,
+      });
+      isInitialMount.current = false;
+    }
+  }, [urlState]);
 
-  // Store'dan URL'e senkronizasyon
+  // State'den URL'e (sadece değişikliklerde)
   useEffect(() => {
-    const { ...stateForUrl } = storeState;
-    setUrlState(stateForUrl);
+    if (!isInitialMount.current) {
+      setUrlState({
+        filters: state.filters,
+        page: state.page,
+        pageSize: state.pageSize,
+        sort: state.sort,
+        search: state.search,
+      });
+    }
   }, [
-    storeState.filters,
-    storeState.page,
-    storeState.pageSize,
-    storeState.sort,
-    storeState.search,
-    storeState,
-    setUrlState,
+    state.filters,
+    state.page,
+    state.pageSize,
+    state.sort,
+    state.search,
+    setUrlState
   ]);
 
-  return storeState;
+  return state;
 };
