@@ -86,6 +86,9 @@ export function OrdersTable() {
         columns={columns}
         total={data.total}
         isLoading={isLoading}
+        defaultPageSize={5}
+        stickyActions={true}
+
         renderRowActions={(row) => (
           <OrderRowActions order={row} onDelete={handleDeleteOrder} />
         )}
