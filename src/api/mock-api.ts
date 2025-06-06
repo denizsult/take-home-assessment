@@ -30,8 +30,9 @@ class MockApiBase {
      
       result = result.filter((item) => {
         return Object.entries(filters).every(([key, value]) => {
-          if (!value) return true;
-          console.log(key);
+      
+
+          if (value === undefined || value === null || value === "")  return true;
 
           if (["start_date", "end_date"].includes(key)) {
             const itemDate = new Date(item["createdAt"]);
