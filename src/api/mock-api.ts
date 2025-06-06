@@ -69,7 +69,7 @@ class MockApiBase {
 
   async create(item: AnyObject) {
     await delay(MOCK_API_DELAY);
-    const newItem = { ...item, id: `${this.resourceName}-${Date.now()}` };
+    const newItem = { ...item, id: `${this.resourceName}-${Date.now()}`, createdAt: new Date().toISOString() };
     this.data.unshift(newItem);
     return newItem;
   }

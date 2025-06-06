@@ -16,7 +16,6 @@ export function UsersTable() {
   const { page, pageSize, sort, filters } = useFilterStoreState();
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [rowActionsId, setRowActionsId] = useState<string>();
   const [data, setData] = useState<{ data: User[]; total: number }>({
     data: [],
     total: 0,
@@ -43,7 +42,7 @@ export function UsersTable() {
     setIsLoading(true);
     try {
       await userApi.create(formData);
-      fetchUsers();
+      await fetchUsers();
       setIsCreateModalOpen(false);
     } catch (error) {
       console.error("Error creating user:", error);
@@ -56,17 +55,12 @@ export function UsersTable() {
     setIsLoading(true);
     try {
       await userApi.delete(id);
-      fetchUsers();
-      setRowActionsId(undefined);
+      await fetchUsers();
     } catch (error) {
       console.error("Error deleting user:", error);
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const toggleRowActions = (id: string) => {
-    setRowActionsId(rowActionsId === id ? undefined : id);
   };
 
   return (
@@ -85,12 +79,7 @@ export function UsersTable() {
         total={data.total}
         isLoading={isLoading}
         renderRowActions={(row) => (
-          <UsersRowActions
-            row={row}
-            rowActionsId={rowActionsId}
-            toggleRowActions={toggleRowActions}
-            handleDeleteUser={handleDeleteUser}
-          />
+          <UsersRowActions row={row} handleDeleteUser={handleDeleteUser} />
         )}
         filterOptions={filterOptions as FilterOption[]}
       />
